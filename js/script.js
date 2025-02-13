@@ -64,7 +64,7 @@ async function getSongs(folder) {
 
 // Play selected music
 const playMusic = (track, pause = false) => {
-    currentSong.src = `songs/${currFolder}/` + track;
+    currentSong.src = `/${currFolder}/` + track;
 
     currentSong.addEventListener("loadedmetadata", () => {
         document.querySelector(".songtime").innerHTML = 
