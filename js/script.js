@@ -19,7 +19,7 @@ function secondsToMinutesSeconds(seconds) {
 // Fetch songs from the folder
 async function getSongs(folder) {
     currFolder = folder;
-    let response = await fetch(`/${folder}/`);
+    let response = await fetch(`songs/${folder}/`);
     let text = await response.text();
     
     let div = document.createElement("div");
@@ -63,7 +63,7 @@ async function getSongs(folder) {
 
 // Play selected music
 const playMusic = (track, pause = false) => {
-    currentSong.src = `/${currFolder}/` + track;
+    currentSong.src = `songs/${currFolder}/` + track;
 
     currentSong.addEventListener("loadedmetadata", () => {
         document.querySelector(".songtime").innerHTML = 
