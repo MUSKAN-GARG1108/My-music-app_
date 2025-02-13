@@ -19,33 +19,28 @@ function secondsToMinutesSeconds(seconds) {
 // Fetch songs from the folder
 async function getSongs(folder) {
     currFolder = folder;
-    console.log("folder: " + folder);
-    let response = await fetch(`/${folder}/`);
-    let text = await response.text();
-    
-    let div = document.createElement("div");
-    div.innerHTML = text;
-    
-    let anchors = div.getElementsByTagName("a");
-    songs = [];
+    console.log("Fetching songs from: " + folder);
 
-    for (let anchor of anchors) {
-        let href = anchor.href;
-        if (href.endsWith(".mp3")) {
-            songs.push(decodeURIComponent(href.split(`/${folder}/`)[1]));
-        }
-    }
+    // Define known songs in each folder (manually or via naming pattern)
+    let predefinedSongs = {
+        "songs/ncs": ["song1.mp3", "song2.mp3", "song3.mp3"],
+        "songs/pop": ["track1.mp3", "track2.mp3"],
+        "songs/rock": ["songA.mp3", "songB.mp3"]
+    };
+
+    songs = predefinedSongs[folder] || []; // Load predefined songs
 
     // Show songs in playlist
     let songUL = document.querySelector(".songList ul");
     songUL.innerHTML = "";
+
     for (const song of songs) {
         songUL.innerHTML += `
             <li>
                 <img class="invert" width="34" src="img/music.svg" alt="">
                 <div class="info">
                     <div>${song.replaceAll("%20", " ")}</div>
-                    <div>Harry</div>
+                    <div>Unknown Artist</div>
                 </div>
                 <div class="playnow">
                     <span>Play Now</span>
@@ -62,9 +57,11 @@ async function getSongs(folder) {
     return songs;
 }
 
+
+
 // Play selected music
 const playMusic = (track, pause = false) => {
-    currentSong.src = `/${currFolder}/` + track;
+    currentSong.src = `/${currFolder}/` + track; // Load from the correct path
 
     currentSong.addEventListener("loadedmetadata", () => {
         document.querySelector(".songtime").innerHTML = 
@@ -78,6 +75,7 @@ const playMusic = (track, pause = false) => {
 
     document.querySelector(".songinfo").innerHTML = decodeURIComponent(track);
 };
+
 
 
 // Fetch and display album folders
